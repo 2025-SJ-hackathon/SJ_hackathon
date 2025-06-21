@@ -10,6 +10,9 @@ app = Flask(__name__)
 def hello():
     return 'Hello, Flask!'
 
+# ***FileNotFoundError***
+# FileNotFoundError: [Errno 2] No such file or directory: 'input.json'
+
 @app.route('/data') # / : 홈페이지 주소 | /data : API 응답 등 데이터 제공하는 별로 경로
 def send_json():
     sample_data = {
