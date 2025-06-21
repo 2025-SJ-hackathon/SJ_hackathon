@@ -1,5 +1,6 @@
 # app.py
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
+import json
 
 # Flask 인스턴스 생성
 app = Flask(__name__)
@@ -9,14 +10,43 @@ app = Flask(__name__)
 def hello():
     return 'Hello, Flask!'
 
-@app.route('/') # / : 홈페이지 주소 | /data : API 응답 등 데이터 제공하는 별로 경로
+@app.route('/data') # / : 홈페이지 주소 | /data : API 응답 등 데이터 제공하는 별로 경로
 def send_json():
     sample_data = {
-        "name": "김철수",
-        "age": 30,
-        "skills": ["Python", "Flask", "React"]
+      "id": 1,
+      "username": "Bret",
+      "email": "Sincere@april.biz",
+      "address": {
+          "street": "Kulas Light",
+          "suite": "Apt. 556",
+          "city": "Gwenborough",
+          "zipcode": "92998-3874"
+      },
+      "admin": False,
+      "hobbies": None
     }
-    return jsonify(sample_data)
+    # return jsonify(sample_data)
+
+    # JSON 문자열로 변환
+    with open('output.json', 'w') as f:
+      json.dump(sample_data, f, indent=2) # indent 들여쓰기
+
+    with open('input.json') as f:
+      json_object = json.load(f)
+
+    # 가정 설정문 : AssertionError, 실수 찾기
+    assert json_object['id'] == 1
+    assert json_object['email'] == 'Sincere@april.biz'
+    assert json_object['address']['zipcode'] == '92998-3874'
+    assert json_object['admin'] is False
+    assert json_object['hobbies'] is None
+'''
+load() : json > python
+dumps() : python > json
+'''
+# 이 파일을 직접 실행할 때만 Flask 앱 실행
+if __name__ == '__main__':
+    app.run(debug=True)
 
 # 예를 들자면
 '''
@@ -25,12 +55,6 @@ def send_json():
 3. 메뉴 레이블을 포함하는 가게명 DB에서 뽑아내기
 4. json으로 프론트에 보내기
 '''
-
-
-# 이 파일을 직접 실행할 때만 Flask 앱 실행
-if __name__ == '__main__':
-    app.run(debug=True)
-
 
 '''# api.py
 from flask import Flask
