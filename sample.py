@@ -1,0 +1,1 @@
+print("Hello Wolrd") # 걍 예시
